@@ -8,3 +8,5 @@ MXL is an XML format for sheet music. The code allows you to parse the notes, du
 MXL is sometimes PKZipped - app contains neccessary code to unpackage<br />
 MXL files often contain multiple voices or sets of notes played together - app accounts for this<br />
 Arduino Uno has a limit of file size - app allows you to control how many notes are generated<br />
+
+<img src="https://raw.githubusercontent.com/MrRedBeard/DotNet-MXL-Parsing-for-Arduino/master/ScreenShot.PNG" />
