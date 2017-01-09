@@ -16,7 +16,6 @@ namespace MusicXMLParser
 {
     /// <summary>
     /// https://github.com/shvelo/musicxml_to_arduino
-    /// https://en.wikibooks.org/wiki/XQuery/MusicXML_to_Arduino
     /// </summary>
     public partial class FormMain : Form
     {
