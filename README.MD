@@ -1,7 +1,7 @@
 # DotNet-MXL-Parsing-for-Arduino
 Parses MXL to an output to be used on Arduino
 <br /><br />
-Thanks to Shvelo who's Ruby code got me pointed in the right direction https://github.com/shvelo/musicxml_to_arduino
+Thanks to <a href="https://github.com/shvelo">Shvelo</a> who's Ruby code got me pointed in the right direction https://github.com/shvelo/musicxml_to_arduino
 <br /><br />
 This is not a pretty or complete solution. It was just enough to get what I wanted done and was written in a very short amount of time.
 <br /><br />
