@@ -22,7 +22,7 @@ MXL Sheet Music Source for the sample<br />
 https://musescore.com/user/2141731/scores/2462606<br />
 <br />
 Click the following link for a short audio demo via YouTube<br />
-https://www.youtube.com/embed/GPvD2ShnI3s<br />
+https://www.youtube.com/watch?v=GPvD2ShnI3s<br />
 <br />
 MP3 Audio Sample (Download to play) <br />
 https://raw.githubusercontent.com/MrRedBeard/DotNet-MXL-Parsing-for-Arduino/master/audioSample.mp3
