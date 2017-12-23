@@ -59,11 +59,12 @@
             // 
             // textBoxNotes
             // 
-            this.textBoxNotes.Location = new System.Drawing.Point(12, 69);
+            this.textBoxNotes.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.textBoxNotes.Location = new System.Drawing.Point(0, 80);
             this.textBoxNotes.Multiline = true;
             this.textBoxNotes.Name = "textBoxNotes";
             this.textBoxNotes.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxNotes.Size = new System.Drawing.Size(650, 349);
+            this.textBoxNotes.Size = new System.Drawing.Size(672, 349);
             this.textBoxNotes.TabIndex = 5;
             // 
             // numericUpDownLimiter
@@ -120,7 +121,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 415);
+            this.ClientSize = new System.Drawing.Size(672, 429);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxDataHolder);
             this.Controls.Add(this.labelLimit);
