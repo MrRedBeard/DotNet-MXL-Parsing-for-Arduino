@@ -15,9 +15,27 @@ namespace MusicXMLParser
         public int frequency { get; set; }
     }
     
+
     public class Pitch
     {
         public Dictionary<string, int> pitches = new Dictionary<string, int>();
+
+        public string ArduinoBottom =
+@"
+void setup() {
+  
+  for (int thisNote = 0; thisNote < sizeof(melody) / sizeof(int); thisNote++)
+  {    
+    tone(11, melody[thisNote], noteDurations[thisNote] * .7);    
+    delay(noteDurations[thisNote]);    
+    noTone(11);
+  }
+}
+
+void loop() {
+  // no need to repeat the melody.
+}
+";
 
         public Pitch()
         {
@@ -110,7 +128,9 @@ namespace MusicXMLParser
             pitches.Add("NOTE_CS8", 4435);
             pitches.Add("NOTE_D8", 4699);
             pitches.Add("NOTE_DS8", 4978);
-        }
+        }       
+
+     
     }
 }
 
