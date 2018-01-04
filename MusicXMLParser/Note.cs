@@ -16,7 +16,7 @@ namespace MusicXMLParser
     }
     
 
-    public class Pitch
+    public class HelperContainer
     {
         public Dictionary<string, int> pitches = new Dictionary<string, int>();
 
@@ -37,7 +37,7 @@ void loop() {
 }
 ";
 
-        public Pitch()
+        public HelperContainer()
         {
             pitches.Add("NOTE_B0", 31);
             pitches.Add("NOTE_C1", 33);

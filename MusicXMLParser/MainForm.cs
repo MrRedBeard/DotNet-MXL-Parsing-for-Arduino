@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.IO.Compression;
 
+
 namespace MusicXMLParser
 {
     /// <summary>
@@ -28,18 +29,13 @@ namespace MusicXMLParser
 
     public partial class FormMain : Form
     {
-        Pitch pitch = new Pitch(); //used to store dict of frequncies
+        HelperContainer helper = new HelperContainer(); //used to store dict of frequncies
         List<Note> notes = new List<Note>(); //used to store the notes
 
         public FormMain()
         {
             InitializeComponent();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-
-        }
+        }        
 
         public void LoadMXL(string xml)
         {
@@ -86,7 +82,7 @@ namespace MusicXMLParser
                     step = snode.SelectSingleNode("pitch").SelectSingleNode("step").InnerText;
                     octave = snode.SelectSingleNode("pitch").SelectSingleNode("octave").InnerText;
                     n.noteString = "NOTE_" + step + octave;
-                    n.frequency = pitch.pitches[n.noteString];
+                    n.frequency = helper.pitches[n.noteString];
                     if (snode.SelectSingleNode("pitch").SelectSingleNode("alter").InnerText == "1")
                     {
                         n.frequency = (int)Math.Round(n.frequency * 1.05946);
@@ -103,7 +99,7 @@ namespace MusicXMLParser
                     step = snode.SelectSingleNode("pitch").SelectSingleNode("step").InnerText;
                     octave = snode.SelectSingleNode("pitch").SelectSingleNode("octave").InnerText; n.noteString = "NOTE_" + step + octave;
 
-                    n.frequency = pitch.pitches[n.noteString];
+                    n.frequency = helper.pitches[n.noteString];
                     n.duration = oneDuration * Convert.ToInt32(snode.SelectSingleNode("duration").InnerText);                    
                 }
 
@@ -150,7 +146,7 @@ namespace MusicXMLParser
             
             openFileDialogMXL.InitialDirectory = Environment.CurrentDirectory;
             openFileDialogMXL.Title = "Open MXL File";
-            openFileDialogMXL.Filter = "MXL/XML Files (*.xml; *.mxl)|*.xml; *.mxl|All files (*.*)|*.*";
+            openFileDialogMXL.Filter = "MXL/XML Files (*.xml; *.mxl)|*.xml; *.mxl";
             openFileDialogMXL.CheckFileExists = true;
             openFileDialogMXL.CheckPathExists = true;
             openFileDialogMXL.Multiselect = false;
@@ -212,9 +208,9 @@ namespace MusicXMLParser
                 {
                     Console.Beep(note.frequency, note.duration);
                 }
-                
             }
         }        
+
 
         private void btnConvert_Click(object sender, EventArgs e)
         {
@@ -238,7 +234,7 @@ namespace MusicXMLParser
 
             rtbArduinoCode.Text += melodyString;
             rtbArduinoCode.Text += durationString;
-            rtbArduinoCode.Text += pitch.ArduinoBottom;
+            rtbArduinoCode.Text += helper.ArduinoBottom;
         }        
     }
 }
