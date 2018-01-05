@@ -7,169 +7,166 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using System.IO.Compression;
 
+
 namespace MusicXMLParser
 {
     /// <summary>
+    /// Original source written in ruby was found at:
     /// https://github.com/shvelo/musicxml_to_arduino
+    /// 
+    /// C# conversion found here:
+    /// https://github.com/MrRedBeard/DotNet-MXL-Parsing-for-Arduino
+    /// 
+    /// Refactored and updated here:
+    /// https://github.com/DavidWeed/DotNet-MXL-Parsing-for-Arduino
     /// </summary>
+    
+
     public partial class FormMain : Form
     {
-        class Notes
-        {
-            public string voice { get; set; }
-            public string noteString { get; set; }
-            public string duration { get; set; }
-        }
+        HelperContainer helper = new HelperContainer(); //used to store dict of frequncies
+        List<Note> notes = new List<Note>(); //used to store the notes
 
         public FormMain()
         {
             InitializeComponent();
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            
-        }
+        }        
 
         public void LoadMXL(string xml)
         {
-            textBoxDataHolder.Text = "";
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);
+            
+            XmlNode node = xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part");
+           
+            double divisions = Convert.ToDouble(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/attributes/divisions").InnerText.Trim(' '));
 
-            //// Get elements
-            XmlNodeList nodes = xmlDoc.DocumentElement.SelectNodes("/score-partwise/part");
-            List<Notes> notes = new List<Notes>();
+            double tempo;
 
-            double divisions = 4;
-            try
+            if (xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/direction/sound").Attributes["tempo"].Value != null)
             {
-                divisions = Convert.ToDouble(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/attributes/divisions").InnerText.Trim(' '));
+                tempo = Math.Round(Convert.ToDouble(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/direction/sound").Attributes["tempo"].Value.Trim(' ')));
             }
-            catch (Exception) { }
-
-            double tempo = 120;
-            try
+            else
             {
-                tempo = Convert.ToDouble(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/direction/sound").Attributes["tempo"].Value.Trim(' '));
+                tempo = 30;
             }
-            catch (Exception) { }
+                        
+            int oneDuration = (int)Math.Round(60.0 / tempo / divisions * 1000.0);
+                        
+            XmlNodeList subnodes = node.SelectNodes("measure/note");
 
-            double qnote = 0;
-            qnote = 60.0 / tempo / divisions * 1000.0;
-
-            foreach (XmlNode node in nodes)
+            foreach (XmlNode snode in subnodes)
             {
-                XmlNodeList subnodes = node.SelectNodes("measure/note");
-                foreach (XmlNode snode in subnodes)
+                Note n = new Note();
+                string step = "";
+                string octave = "";
+
+                double freqMult = 1.0;
+
+                n.voice = snode.SelectSingleNode("voice").InnerText;
+
+
+                if (snode.SelectSingleNode("rest") != null)
+                {                    
+                    n.frequency = 0;
+                    n.duration = oneDuration * Convert.ToInt32(snode.SelectSingleNode("duration").InnerText);                   
+                }
+                else if (snode.SelectSingleNode("pitch").SelectSingleNode("alter") != null)
                 {
-                    Notes n = new Notes();
-                    try
+                    step = snode.SelectSingleNode("pitch").SelectSingleNode("step").InnerText;
+                    octave = snode.SelectSingleNode("pitch").SelectSingleNode("octave").InnerText;
+                    n.noteString = "NOTE_" + step + octave;
+                    n.frequency = helper.pitches[n.noteString];
+                    if (snode.SelectSingleNode("pitch").SelectSingleNode("alter").InnerText == "1")
                     {
-                        n.voice = snode.SelectSingleNode("voice").InnerText;
-                        //n.note = snode.SelectSingleNode("pitch").SelectSingleNode("step").InnerText;
-                        //n.octave = snode.SelectSingleNode("pitch").SelectSingleNode("octave").InnerText;
-                        n.noteString = "NOTE_" + snode.SelectSingleNode("pitch").SelectSingleNode("step").InnerText + snode.SelectSingleNode("pitch").SelectSingleNode("octave").InnerText;
-                        switch (snode.SelectSingleNode("type").InnerText)
-                        {
-                            case "whole":
-                                n.duration = Math.Round((qnote * 4), 0).ToString();
-                                break;
-                            case "half":
-                                n.duration = Math.Round((qnote * 2), 0).ToString();
-                                break;
-                            case "quarter":
-                                n.duration = Math.Round((qnote), 0).ToString();
-                                break;
-                            case "eighth":
-                                n.duration = Math.Round((qnote / 2), 0).ToString();
-                                break;
-                            default:
-                                n.duration = Math.Round((qnote * 4), 0).ToString();
-                                break;
-                        }
-
-                        if (n.duration.Length < 1)
-                        {
-                            n.duration = "0";
-                        }
-
-                        notes.Add(n);
+                        n.frequency = (int)Math.Round(n.frequency * 1.05946);
                     }
-                    catch (Exception)
+                    else
                     {
+                        n.frequency = (int)Math.Round(n.frequency / 1.05946);
+                    }
+                    
+                    n.duration = oneDuration * Convert.ToInt32(snode.SelectSingleNode("duration").InnerText);                    
+                }
+                else
+                {
+                    step = snode.SelectSingleNode("pitch").SelectSingleNode("step").InnerText;
+                    octave = snode.SelectSingleNode("pitch").SelectSingleNode("octave").InnerText; n.noteString = "NOTE_" + step + octave;
+
+                    n.frequency = helper.pitches[n.noteString];
+                    n.duration = oneDuration * Convert.ToInt32(snode.SelectSingleNode("duration").InnerText);                    
+                }
+
+                int fifths = Convert.ToInt32(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/attributes/key").SelectSingleNode("fifths").Value);
+
+                char[] sharps = { 'F', 'C', 'G', 'D', 'A', 'E', 'B' };
+                char[] flats = { 'B', 'E', 'A', 'D', 'G', 'C', 'F' };
+
+                if (fifths > 0)
+                {
+                    for (int i = 0; i < fifths; i++)
+                    {
+                        if (step[0] == sharps[i])
+                        {
+                            freqMult = 1.05946;
+                        }
                     }
                 }
-            }
-
-            string voice = ""; //track when change
-            string output = "";
-
-            string headerString = "";
-            string notesString = "";
-            string durationString = "";
-            string voiceString = "";
-            foreach (Notes no in notes.OrderBy(n => n.voice).ToList<Notes>())
-            {
-                if (voice == "")
+                else if (fifths < 0)
                 {
-                    voice = no.voice;
-                }
-                if (voice != no.voice)
-                {
-                    headerString = Environment.NewLine + Environment.NewLine + Environment.NewLine + "Voice:" + voiceString + Environment.NewLine + Environment.NewLine;
-                    notesString = notesString.Substring(0, notesString.Length - 2);
-                    durationString = durationString.Substring(0, durationString.Length - 2);
-                    output += headerString + notesString + Environment.NewLine + Environment.NewLine + durationString + Environment.NewLine;
+                    fifths *= -1;
 
-                    durationString = "";
-                    notesString = "";
-                    voice = no.voice;
+                    for (int i = 0; i < fifths; i++)
+                    {
+                        if (step[0] == flats[i])
+                        {
+                            freqMult = (1.0 / 1.05946);
+                        }
+                    }
                 }
-                voiceString = no.voice;
-                notesString += no.noteString + ", ";
-                durationString += no.duration + ", ";
+                
+                n.frequency = (int)Math.Round(n.frequency * freqMult);
+                n.noteString = n.frequency.ToString();
+                notes.Add(n);
+
+                lstFreq.Items.Add(n.frequency);
+                lstDurations.Items.Add(n.duration);
             }
-            //Only one voice in file
-            if (output.Length < 5)
-            {
-                headerString = Environment.NewLine + Environment.NewLine + Environment.NewLine + "Voice:" + voiceString + Environment.NewLine + Environment.NewLine;
-                notesString = notesString.Substring(0, notesString.Length - 1);
-                durationString = durationString.Substring(0, durationString.Length - 1);
-                output += headerString + notesString + Environment.NewLine + Environment.NewLine + durationString + Environment.NewLine;
-            }
-            textBoxNotes.Text = output;
-            textBoxDataHolder.Text = output;
         }
+
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
         {
-            numericUpDownLimiter.Value = 400;
-            openFileDialogMXL.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-            openFileDialogMXL.Title = "Open MXL";
-            //openFileDialogMXL.DefaultExt = "mxl";
-            openFileDialogMXL.Filter = "MXL/XML Files (*.xml; *.mxl)|*.xml; *.mxl|All files (*.*)|*.*";
+            
+            openFileDialogMXL.InitialDirectory = Environment.CurrentDirectory;
+            openFileDialogMXL.Title = "Open MXL File";
+            openFileDialogMXL.Filter = "MXL/XML Files (*.xml; *.mxl)|*.xml; *.mxl";
             openFileDialogMXL.CheckFileExists = true;
             openFileDialogMXL.CheckPathExists = true;
             openFileDialogMXL.Multiselect = false;
 
             if (openFileDialogMXL.ShowDialog() == DialogResult.OK)
             {
-                labelOpenedFile.Text = "Opened File: " + openFileDialogMXL.FileName;
+                txtMXLFile.Text = openFileDialogMXL.FileName;
                 if (openFileDialogMXL.FileName.Length > 1)
                 {
-                    try
+                    if (openFileDialogMXL.FileName.Contains(".xml"))
+                    {
+                        LoadMXL(File.ReadAllText(openFileDialogMXL.FileName));
+                    }
+                    else if (openFileDialogMXL.FileName.Contains(".mxl"))
                     {
                         unZipMXL(openFileDialogMXL.FileName);
                     }
-                    catch (Exception)
+                    else
                     {
-                        LoadMXL(File.ReadAllText(openFileDialogMXL.FileName));
+                        MessageBox.Show("Please select either a '.mxl' or '.xml' file type.", "File Type Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -192,34 +189,52 @@ namespace MusicXMLParser
             }
         }
 
-        private void numericUpDownLimiter_ValueChanged(object sender, EventArgs e)
+
+        private void btnPlayPreview_Click(object sender, EventArgs e)
         {
-            textBoxNotes.Text = "";
-            List<string> ls = new List<string>();
-            string outputline = "";
-            foreach (string line in textBoxDataHolder.Lines)
+            if (notes.Count == 0)
             {
-                if (line.Contains(','))
+                MessageBox.Show("There are no notes to play");
+                return;
+            }
+
+            foreach (Note note in notes)
+            {
+                if (note.frequency == 0)
                 {
-                    ls = line.Split(',').ToList<string>();
-                    foreach (string item in ls)
-                    {
-                        outputline += item + ", ";
-                        if (outputline.Split(',').Count() >= numericUpDownLimiter.Value)
-                        {
-                            break;
-                        }
-                    }
-                    outputline = outputline.Replace("  ", " ");
-                    outputline = outputline.Substring(0, outputline.Length - 2);
+                    Thread.Sleep(note.duration);
                 }
                 else
                 {
-                    outputline = line;
+                    Console.Beep(note.frequency, note.duration);
                 }
-                textBoxNotes.Text += outputline + Environment.NewLine;
-                outputline = "";
             }
-        }
+        }        
+
+
+        private void btnConvert_Click(object sender, EventArgs e)
+        {
+            rtbArduinoCode.Text = "";
+
+            string melodyString = "\nint melody[] = { \n";
+            string durationString = "int noteDurations[] = { \n";
+
+            foreach (var freq in lstFreq.Items)
+            {
+                melodyString += freq.ToString() + ", ";
+            }
+
+            foreach (var dur in lstDurations.Items)
+            {
+                durationString += dur + ", ";
+            }
+
+            melodyString += "0 \n};\n";
+            durationString += "0 \n};\n";
+
+            rtbArduinoCode.Text += melodyString;
+            rtbArduinoCode.Text += durationString;
+            rtbArduinoCode.Text += helper.ArduinoBottom;
+        }        
     }
 }

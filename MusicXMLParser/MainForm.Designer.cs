@@ -30,108 +30,92 @@
         {
             this.openFileDialogMXL = new System.Windows.Forms.OpenFileDialog();
             this.buttonOpenFile = new System.Windows.Forms.Button();
-            this.labelOpenedFile = new System.Windows.Forms.Label();
-            this.textBoxNotes = new System.Windows.Forms.TextBox();
-            this.numericUpDownLimiter = new System.Windows.Forms.NumericUpDown();
-            this.labelLimit = new System.Windows.Forms.Label();
-            this.textBoxDataHolder = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLimiter)).BeginInit();
+            this.lstFreq = new System.Windows.Forms.ListBox();
+            this.lstDurations = new System.Windows.Forms.ListBox();
+            this.rtbArduinoCode = new System.Windows.Forms.RichTextBox();
+            this.btnPlayPreview = new System.Windows.Forms.Button();
+            this.txtMXLFile = new System.Windows.Forms.TextBox();
+            this.btnConvert = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonOpenFile
             // 
-            this.buttonOpenFile.Location = new System.Drawing.Point(13, 13);
+            this.buttonOpenFile.Location = new System.Drawing.Point(15, 12);
             this.buttonOpenFile.Name = "buttonOpenFile";
-            this.buttonOpenFile.Size = new System.Drawing.Size(75, 23);
+            this.buttonOpenFile.Size = new System.Drawing.Size(92, 23);
             this.buttonOpenFile.TabIndex = 3;
             this.buttonOpenFile.Text = "Open MXL";
             this.buttonOpenFile.UseVisualStyleBackColor = true;
             this.buttonOpenFile.Click += new System.EventHandler(this.buttonOpenFile_Click);
             // 
-            // labelOpenedFile
+            // lstFreq
             // 
-            this.labelOpenedFile.AutoSize = true;
-            this.labelOpenedFile.Location = new System.Drawing.Point(111, 22);
-            this.labelOpenedFile.Name = "labelOpenedFile";
-            this.labelOpenedFile.Size = new System.Drawing.Size(0, 13);
-            this.labelOpenedFile.TabIndex = 4;
+            this.lstFreq.FormattingEnabled = true;
+            this.lstFreq.Location = new System.Drawing.Point(15, 40);
+            this.lstFreq.Name = "lstFreq";
+            this.lstFreq.Size = new System.Drawing.Size(120, 303);
+            this.lstFreq.TabIndex = 10;
             // 
-            // textBoxNotes
+            // lstDurations
             // 
-            this.textBoxNotes.Location = new System.Drawing.Point(12, 69);
-            this.textBoxNotes.Multiline = true;
-            this.textBoxNotes.Name = "textBoxNotes";
-            this.textBoxNotes.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.textBoxNotes.Size = new System.Drawing.Size(650, 349);
-            this.textBoxNotes.TabIndex = 5;
+            this.lstDurations.FormattingEnabled = true;
+            this.lstDurations.Location = new System.Drawing.Point(159, 40);
+            this.lstDurations.Name = "lstDurations";
+            this.lstDurations.Size = new System.Drawing.Size(120, 303);
+            this.lstDurations.TabIndex = 11;
             // 
-            // numericUpDownLimiter
+            // rtbArduinoCode
             // 
-            this.numericUpDownLimiter.Increment = new decimal(new int[] {
-            25,
-            0,
-            0,
-            0});
-            this.numericUpDownLimiter.Location = new System.Drawing.Point(55, 43);
-            this.numericUpDownLimiter.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this.numericUpDownLimiter.Name = "numericUpDownLimiter";
-            this.numericUpDownLimiter.Size = new System.Drawing.Size(56, 20);
-            this.numericUpDownLimiter.TabIndex = 6;
-            this.numericUpDownLimiter.Value = new decimal(new int[] {
-            400,
-            0,
-            0,
-            0});
-            this.numericUpDownLimiter.ValueChanged += new System.EventHandler(this.numericUpDownLimiter_ValueChanged);
+            this.rtbArduinoCode.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbArduinoCode.Location = new System.Drawing.Point(303, 40);
+            this.rtbArduinoCode.Name = "rtbArduinoCode";
+            this.rtbArduinoCode.ReadOnly = true;
+            this.rtbArduinoCode.Size = new System.Drawing.Size(357, 305);
+            this.rtbArduinoCode.TabIndex = 12;
+            this.rtbArduinoCode.Text = "";
             // 
-            // labelLimit
+            // btnPlayPreview
             // 
-            this.labelLimit.AutoSize = true;
-            this.labelLimit.Location = new System.Drawing.Point(12, 46);
-            this.labelLimit.Name = "labelLimit";
-            this.labelLimit.Size = new System.Drawing.Size(37, 13);
-            this.labelLimit.TabIndex = 7;
-            this.labelLimit.Text = "Limiter";
+            this.btnPlayPreview.Location = new System.Drawing.Point(489, 12);
+            this.btnPlayPreview.Name = "btnPlayPreview";
+            this.btnPlayPreview.Size = new System.Drawing.Size(92, 23);
+            this.btnPlayPreview.TabIndex = 14;
+            this.btnPlayPreview.Text = "Play Preview";
+            this.btnPlayPreview.UseVisualStyleBackColor = true;
+            this.btnPlayPreview.Click += new System.EventHandler(this.btnPlayPreview_Click);
             // 
-            // textBoxDataHolder
+            // txtMXLFile
             // 
-            this.textBoxDataHolder.Location = new System.Drawing.Point(269, 43);
-            this.textBoxDataHolder.Multiline = true;
-            this.textBoxDataHolder.Name = "textBoxDataHolder";
-            this.textBoxDataHolder.Size = new System.Drawing.Size(100, 20);
-            this.textBoxDataHolder.TabIndex = 8;
-            this.textBoxDataHolder.Visible = false;
+            this.txtMXLFile.Location = new System.Drawing.Point(114, 13);
+            this.txtMXLFile.Name = "txtMXLFile";
+            this.txtMXLFile.ReadOnly = true;
+            this.txtMXLFile.Size = new System.Drawing.Size(369, 20);
+            this.txtMXLFile.TabIndex = 15;
             // 
-            // label1
+            // btnConvert
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(114, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Notes";
+            this.btnConvert.Location = new System.Drawing.Point(587, 12);
+            this.btnConvert.Name = "btnConvert";
+            this.btnConvert.Size = new System.Drawing.Size(73, 23);
+            this.btnConvert.TabIndex = 13;
+            this.btnConvert.Text = "Convert";
+            this.btnConvert.UseVisualStyleBackColor = true;
+            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(675, 415);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBoxDataHolder);
-            this.Controls.Add(this.labelLimit);
-            this.Controls.Add(this.numericUpDownLimiter);
-            this.Controls.Add(this.textBoxNotes);
-            this.Controls.Add(this.labelOpenedFile);
+            this.ClientSize = new System.Drawing.Size(672, 356);
+            this.Controls.Add(this.txtMXLFile);
+            this.Controls.Add(this.btnPlayPreview);
+            this.Controls.Add(this.btnConvert);
+            this.Controls.Add(this.rtbArduinoCode);
+            this.Controls.Add(this.lstDurations);
+            this.Controls.Add(this.lstFreq);
             this.Controls.Add(this.buttonOpenFile);
             this.Name = "FormMain";
             this.Text = "Convert MXL to Note List for Arduino";
-            this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownLimiter)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -140,12 +124,12 @@
         #endregion
         private System.Windows.Forms.OpenFileDialog openFileDialogMXL;
         private System.Windows.Forms.Button buttonOpenFile;
-        private System.Windows.Forms.Label labelOpenedFile;
-        private System.Windows.Forms.TextBox textBoxNotes;
-        private System.Windows.Forms.NumericUpDown numericUpDownLimiter;
-        private System.Windows.Forms.Label labelLimit;
-        private System.Windows.Forms.TextBox textBoxDataHolder;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListBox lstFreq;
+        private System.Windows.Forms.ListBox lstDurations;
+        private System.Windows.Forms.RichTextBox rtbArduinoCode;
+        private System.Windows.Forms.Button btnPlayPreview;
+        private System.Windows.Forms.TextBox txtMXLFile;
+        private System.Windows.Forms.Button btnConvert;
     }
 }
 
