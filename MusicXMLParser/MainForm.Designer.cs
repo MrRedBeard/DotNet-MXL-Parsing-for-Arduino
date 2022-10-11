@@ -37,6 +37,7 @@
             this.txtMXLFile = new System.Windows.Forms.TextBox();
             this.btnConvert = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.btnStopPreview = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -113,11 +114,27 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
+            // btnStopPreview
+            // 
+            this.btnStopPreview.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.btnStopPreview.FlatAppearance.BorderColor = System.Drawing.Color.MidnightBlue;
+            this.btnStopPreview.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnStopPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStopPreview.Location = new System.Drawing.Point(241, 129);
+            this.btnStopPreview.Name = "btnStopPreview";
+            this.btnStopPreview.Size = new System.Drawing.Size(276, 115);
+            this.btnStopPreview.TabIndex = 17;
+            this.btnStopPreview.Text = "Stop Preview";
+            this.btnStopPreview.UseVisualStyleBackColor = false;
+            this.btnStopPreview.Visible = false;
+            this.btnStopPreview.Click += new System.EventHandler(this.btnStopPreview_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 356);
+            this.Controls.Add(this.btnStopPreview);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.txtMXLFile);
             this.Controls.Add(this.btnPlayPreview);
@@ -143,6 +160,7 @@
         private System.Windows.Forms.TextBox txtMXLFile;
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Button btnStopPreview;
     }
 }
 

@@ -30,8 +30,11 @@ namespace MusicXMLParser
 
     public partial class FormMain : Form
     {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        static extern bool Beep(uint dwFreq, uint dwDuration);
+        [DllImport("kernel32.dll")]
+        private static extern bool Beep(int frequency, int duration);
+
+        private Thread SoundPlayThread;
+        private CancellationTokenSource stopSoundPlay;
 
         HelperContainer helper = new HelperContainer(); //used to store dict of frequncies
         List<Note> notes = new List<Note>(); //used to store the notes
@@ -39,6 +42,7 @@ namespace MusicXMLParser
         public FormMain()
         {
             InitializeComponent();
+            stopSoundPlay = new CancellationTokenSource();
         }        
 
         public void LoadMXL(string xml)
@@ -50,17 +54,17 @@ namespace MusicXMLParser
            
             double divisions = Convert.ToDouble(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/attributes/divisions").InnerText.Trim(' '));
 
-            double tempo;
+            double tempo = 120; //Temp override 
 
-            if (xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/direction/sound").Attributes["tempo"].Value != null)
-            {
-                tempo = Math.Round(Convert.ToDouble(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/direction/sound").Attributes["tempo"].Value.Trim(' ')));
-            }
-            else
-            {
-                tempo = 30;
-            }
-                        
+            //if (xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/direction/sound").Attributes["tempo"].Value != null)
+            //{
+            //    tempo = Math.Round(Convert.ToDouble(xmlDoc.DocumentElement.SelectSingleNode("/score-partwise/part/measure/direction/sound").Attributes["tempo"].Value.Trim(' ')));
+            //}
+            //else
+            //{
+            //    tempo = 30;
+            //}
+
             int oneDuration = (int)Math.Round(60.0 / tempo / divisions * 1000.0);
                         
             XmlNodeList subnodes = node.SelectNodes("measure/note");
@@ -138,9 +142,11 @@ namespace MusicXMLParser
                 n.frequency = (int)Math.Round(n.frequency * freqMult);
                 n.noteString = n.frequency.ToString();
                 notes.Add(n);
-
-                lstFreq.Items.Add(n.frequency);
-                lstDurations.Items.Add(n.duration);
+                if(n.duration < 1200)
+                {
+                    lstFreq.Items.Add(n.frequency);
+                    lstDurations.Items.Add(n.duration);
+                }
             }
         }
 
@@ -196,6 +202,21 @@ namespace MusicXMLParser
 
         private void btnPlayPreview_Click(object sender, EventArgs e)
         {
+            btnStopPreview.Visible = true;
+            SoundPlayThread = new Thread(PlayPreview);
+            SoundPlayThread.Name = "SoundPlayThread";
+            SoundPlayThread.IsBackground = true;
+            SoundPlayThread.Start();
+        }
+
+        private void btnStopPreview_Click(object sender, EventArgs e)
+        {
+            btnStopPreview.Visible = false;
+            SoundPlayThread.Abort();
+        }
+
+        private void PlayPreview()
+        {
             if (notes.Count == 0)
             {
                 MessageBox.Show("There are no notes to play");
@@ -210,11 +231,12 @@ namespace MusicXMLParser
                 }
                 else
                 {
-                    //Beep((uint) note.frequency, (uint) note.duration / 2 );
-                    Console.Beep(note.frequency, note.duration);
+                    Beep((int)note.frequency, (int)note.duration);
+                    //Console.Beep((int)note.frequency, (int)note.duration);
                 }
             }
-        }        
+            btnStopPreview.Visible = false;
+        }
 
 
         private void btnConvert_Click(object sender, EventArgs e)
@@ -258,5 +280,7 @@ namespace MusicXMLParser
         {
             ResetForm();
         }
+
+        
     }
 }
