@@ -36,6 +36,7 @@
             this.btnPlayPreview = new System.Windows.Forms.Button();
             this.txtMXLFile = new System.Windows.Forms.TextBox();
             this.btnConvert = new System.Windows.Forms.Button();
+            this.btnReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -70,7 +71,7 @@
             this.rtbArduinoCode.Location = new System.Drawing.Point(303, 40);
             this.rtbArduinoCode.Name = "rtbArduinoCode";
             this.rtbArduinoCode.ReadOnly = true;
-            this.rtbArduinoCode.Size = new System.Drawing.Size(357, 305);
+            this.rtbArduinoCode.Size = new System.Drawing.Size(437, 305);
             this.rtbArduinoCode.TabIndex = 12;
             this.rtbArduinoCode.Text = "";
             // 
@@ -102,11 +103,22 @@
             this.btnConvert.UseVisualStyleBackColor = true;
             this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(665, 12);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 23);
+            this.btnReset.TabIndex = 16;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(672, 356);
+            this.ClientSize = new System.Drawing.Size(750, 356);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.txtMXLFile);
             this.Controls.Add(this.btnPlayPreview);
             this.Controls.Add(this.btnConvert);
@@ -130,6 +142,7 @@
         private System.Windows.Forms.Button btnPlayPreview;
         private System.Windows.Forms.TextBox txtMXLFile;
         private System.Windows.Forms.Button btnConvert;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 
