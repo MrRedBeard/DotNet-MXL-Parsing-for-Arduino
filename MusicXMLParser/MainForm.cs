@@ -11,7 +11,8 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using System.IO.Compression;
-
+using System.Media;
+using System.Runtime.InteropServices;
 
 namespace MusicXMLParser
 {
@@ -29,6 +30,9 @@ namespace MusicXMLParser
 
     public partial class FormMain : Form
     {
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool Beep(uint dwFreq, uint dwDuration);
+
         HelperContainer helper = new HelperContainer(); //used to store dict of frequncies
         List<Note> notes = new List<Note>(); //used to store the notes
 
@@ -143,7 +147,7 @@ namespace MusicXMLParser
 
         private void buttonOpenFile_Click(object sender, EventArgs e)
         {
-            
+            ResetForm();
             openFileDialogMXL.InitialDirectory = Environment.CurrentDirectory;
             openFileDialogMXL.Title = "Open MXL File";
             openFileDialogMXL.Filter = "MXL/XML Files (*.xml; *.mxl)|*.xml; *.mxl";
@@ -206,6 +210,7 @@ namespace MusicXMLParser
                 }
                 else
                 {
+                    //Beep((uint) note.frequency, (uint) note.duration / 2 );
                     Console.Beep(note.frequency, note.duration);
                 }
             }
@@ -235,6 +240,23 @@ namespace MusicXMLParser
             rtbArduinoCode.Text += melodyString;
             rtbArduinoCode.Text += durationString;
             rtbArduinoCode.Text += helper.ArduinoBottom;
-        }        
+        }
+
+        public void ResetForm()
+        {
+            lstFreq.Items.Clear();
+            lstFreq.Text = "";
+            lstDurations.Items.Clear();
+            lstDurations.Text = "";
+            rtbArduinoCode.Text = "";
+            txtMXLFile.Text = "";
+            openFileDialogMXL.Reset();
+            notes = new List<Note>();
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            ResetForm();
+        }
     }
 }
