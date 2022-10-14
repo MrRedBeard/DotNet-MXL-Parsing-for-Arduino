@@ -43,6 +43,14 @@ namespace MusicXMLParser
         {
             InitializeComponent();
             stopSoundPlay = new CancellationTokenSource();
+            resizeForm();
+
+            //Right Click Copy on RTB
+            ToolStripMenuItem tsmiCopy = new ToolStripMenuItem("Copy");
+            tsmiCopy.Click += (sender, e) => rtbArduinoCode.Copy();
+            contextMenuStripArduinoRTB.Items.Add(tsmiCopy);
+
+            rtbArduinoCode.ContextMenuStrip = contextMenuStripArduinoRTB;
         }        
 
         public void LoadMXL(string xml)
@@ -276,11 +284,61 @@ namespace MusicXMLParser
             notes = new List<Note>();
         }
 
+        public void resizeForm()
+        {
+            buttonOpenFile.Height = 23;
+            buttonOpenFile.Top = 15;
+            txtMXLFile.Height = 23;
+            txtMXLFile.Top = 15;
+            btnPlayPreview.Height = 23;
+            btnPlayPreview.Top = 15;
+            btnConvert.Height = 23;
+            btnConvert.Top = 15;
+            btnReset.Height = 23;
+            btnReset.Top = 15;
+
+            //First row height + first row margin + 2nd row margin
+            int secondRowYMargin = 23 + 15 + 15;
+
+            lstFreq.Top = secondRowYMargin;
+            lstDurations.Top = secondRowYMargin;
+            rtbArduinoCode.Top = secondRowYMargin;
+
+            //Additional bottom margin of 15
+            int secondRowHeight = this.Height - secondRowYMargin - (15 * 3);
+
+            lstFreq.Height = secondRowHeight;
+            lstDurations.Height = secondRowHeight;
+            rtbArduinoCode.Height = secondRowHeight;
+
+            //Form width - margins
+            int FormWidth = this.Width - (5 * 15);
+
+            lstFreq.Width = (FormWidth / 4); //25%
+            lstDurations.Width = (FormWidth / 4); //25%
+            rtbArduinoCode.Width = (FormWidth / 2); //50%
+
+            //Left Margin 15 plus left element width
+            lstFreq.Left = 15;
+            lstDurations.Left = (15 * 2) + lstFreq.Width;
+            rtbArduinoCode.Left = (15 * 3) + lstFreq.Width + lstDurations.Width;
+
+            //rtbArduinoCode.Text = "Width: " + this.Width + " Height: " + this.Height;
+        }
+
         private void btnReset_Click(object sender, EventArgs e)
         {
             ResetForm();
         }
 
-        
+        private void FormMain_Resize(object sender, EventArgs e)
+        {
+            resizeForm();
+        }
+
+        private void rtbArduinoCode_MouseClick(object sender, MouseEventArgs e)
+        {
+            rtbArduinoCode.SelectAll();
+        }
     }
 }

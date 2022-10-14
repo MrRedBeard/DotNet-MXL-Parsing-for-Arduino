@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.openFileDialogMXL = new System.Windows.Forms.OpenFileDialog();
             this.buttonOpenFile = new System.Windows.Forms.Button();
             this.lstFreq = new System.Windows.Forms.ListBox();
@@ -38,6 +39,7 @@
             this.btnConvert = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
             this.btnStopPreview = new System.Windows.Forms.Button();
+            this.contextMenuStripArduinoRTB = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -68,6 +70,7 @@
             // 
             // rtbArduinoCode
             // 
+            this.rtbArduinoCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.rtbArduinoCode.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbArduinoCode.Location = new System.Drawing.Point(303, 40);
             this.rtbArduinoCode.Name = "rtbArduinoCode";
@@ -75,6 +78,7 @@
             this.rtbArduinoCode.Size = new System.Drawing.Size(437, 305);
             this.rtbArduinoCode.TabIndex = 12;
             this.rtbArduinoCode.Text = "";
+            this.rtbArduinoCode.MouseClick += new System.Windows.Forms.MouseEventHandler(this.rtbArduinoCode_MouseClick);
             // 
             // btnPlayPreview
             // 
@@ -129,6 +133,11 @@
             this.btnStopPreview.Visible = false;
             this.btnStopPreview.Click += new System.EventHandler(this.btnStopPreview_Click);
             // 
+            // contextMenuStripArduinoRTB
+            // 
+            this.contextMenuStripArduinoRTB.Name = "contextMenuStripArduinoRTB";
+            this.contextMenuStripArduinoRTB.Size = new System.Drawing.Size(61, 4);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -143,8 +152,10 @@
             this.Controls.Add(this.lstDurations);
             this.Controls.Add(this.lstFreq);
             this.Controls.Add(this.buttonOpenFile);
+            this.MinimumSize = new System.Drawing.Size(758, 221);
             this.Name = "FormMain";
             this.Text = "Convert MXL to Note List for Arduino";
+            this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,6 +172,7 @@
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.Button btnReset;
         private System.Windows.Forms.Button btnStopPreview;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripArduinoRTB;
     }
 }
 
