@@ -13,6 +13,8 @@ using System.Xml;
 using System.IO.Compression;
 using System.Media;
 using System.Runtime.InteropServices;
+using NAudio.Wave.SampleProviders;
+using NAudio.Wave;
 
 namespace MusicXMLParser
 {
@@ -42,6 +44,7 @@ namespace MusicXMLParser
         public FormMain()
         {
             InitializeComponent();
+
             stopSoundPlay = new CancellationTokenSource();
             resizeForm();
 
@@ -51,7 +54,12 @@ namespace MusicXMLParser
             contextMenuStripArduinoRTB.Items.Add(tsmiCopy);
 
             rtbArduinoCode.ContextMenuStrip = contextMenuStripArduinoRTB;
-        }        
+        }
+
+        private void FormMain_Load(object sender, EventArgs e)
+        {
+
+        }
 
         public void LoadMXL(string xml)
         {
@@ -210,7 +218,6 @@ namespace MusicXMLParser
 
         private void btnPlayPreview_Click(object sender, EventArgs e)
         {
-            btnStopPreview.Visible = true;
             SoundPlayThread = new Thread(PlayPreview);
             SoundPlayThread.Name = "SoundPlayThread";
             SoundPlayThread.IsBackground = true;
@@ -219,7 +226,6 @@ namespace MusicXMLParser
 
         private void btnStopPreview_Click(object sender, EventArgs e)
         {
-            btnStopPreview.Visible = false;
             SoundPlayThread.Abort();
         }
 
@@ -233,17 +239,22 @@ namespace MusicXMLParser
 
             foreach (Note note in notes)
             {
-                if (note.frequency == 0)
+                var sine = new SignalGenerator()
                 {
-                    Thread.Sleep(note.duration);
-                }
-                else
+                    Gain = 0.2,
+                    Frequency = note.frequency,
+                    Type = SignalGeneratorType.Sin
+                }.Take(TimeSpan.FromMilliseconds(note.duration));
+                using (var wo = new WaveOutEvent())
                 {
-                    Beep((int)note.frequency, (int)note.duration);
-                    //Console.Beep((int)note.frequency, (int)note.duration);
+                    wo.Init(sine);
+                    wo.Play();
+                    while (wo.PlaybackState == PlaybackState.Playing)
+                    {
+                        Thread.Sleep(50);
+                    }
                 }
             }
-            btnStopPreview.Visible = false;
         }
 
 
@@ -286,16 +297,29 @@ namespace MusicXMLParser
 
         public void resizeForm()
         {
+            buttonOpenFile.Left = 15;
             buttonOpenFile.Height = 23;
             buttonOpenFile.Top = 15;
+            
             txtMXLFile.Height = 23;
-            txtMXLFile.Top = 15;
+            txtMXLFile.Top = 15 + 2;
+            txtMXLFile.Left = buttonOpenFile.Width + buttonOpenFile.Location.X + 15;
+            
             btnPlayPreview.Height = 23;
             btnPlayPreview.Top = 15;
+            btnPlayPreview.Left = txtMXLFile.Width + txtMXLFile.Location.X + 15;
+
+            btnStopPreview.Top = 15;
+            btnStopPreview.Height = 23;
+            btnStopPreview.Left = btnPlayPreview.Width + btnPlayPreview.Location.X + 15;
+
             btnConvert.Height = 23;
             btnConvert.Top = 15;
+            btnConvert.Left = btnStopPreview.Width + btnStopPreview.Location.X + 15;
+           
             btnReset.Height = 23;
             btnReset.Top = 15;
+            btnReset.Left = btnConvert.Width + btnConvert.Location.X + 15;
 
             //First row height + first row margin + 2nd row margin
             int secondRowYMargin = 23 + 15 + 15;
@@ -323,6 +347,7 @@ namespace MusicXMLParser
             lstDurations.Left = (15 * 2) + lstFreq.Width;
             rtbArduinoCode.Left = (15 * 3) + lstFreq.Width + lstDurations.Width;
 
+            //Test output of form width
             //rtbArduinoCode.Text = "Width: " + this.Width + " Height: " + this.Height;
         }
 
@@ -340,5 +365,7 @@ namespace MusicXMLParser
         {
             rtbArduinoCode.SelectAll();
         }
+
+        
     }
 }
