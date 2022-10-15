@@ -38,8 +38,8 @@
             this.txtMXLFile = new System.Windows.Forms.TextBox();
             this.btnConvert = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
-            this.btnStopPreview = new System.Windows.Forms.Button();
             this.contextMenuStripArduinoRTB = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.btnStopPreview = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // buttonOpenFile
@@ -75,7 +75,7 @@
             this.rtbArduinoCode.Location = new System.Drawing.Point(303, 40);
             this.rtbArduinoCode.Name = "rtbArduinoCode";
             this.rtbArduinoCode.ReadOnly = true;
-            this.rtbArduinoCode.Size = new System.Drawing.Size(437, 305);
+            this.rtbArduinoCode.Size = new System.Drawing.Size(583, 305);
             this.rtbArduinoCode.TabIndex = 12;
             this.rtbArduinoCode.Text = "";
             this.rtbArduinoCode.MouseClick += new System.Windows.Forms.MouseEventHandler(this.rtbArduinoCode_MouseClick);
@@ -100,7 +100,7 @@
             // 
             // btnConvert
             // 
-            this.btnConvert.Location = new System.Drawing.Point(587, 12);
+            this.btnConvert.Location = new System.Drawing.Point(686, 13);
             this.btnConvert.Name = "btnConvert";
             this.btnConvert.Size = new System.Drawing.Size(73, 23);
             this.btnConvert.TabIndex = 13;
@@ -110,7 +110,7 @@
             // 
             // btnReset
             // 
-            this.btnReset.Location = new System.Drawing.Point(665, 12);
+            this.btnReset.Location = new System.Drawing.Point(765, 13);
             this.btnReset.Name = "btnReset";
             this.btnReset.Size = new System.Drawing.Size(75, 23);
             this.btnReset.TabIndex = 16;
@@ -118,31 +118,26 @@
             this.btnReset.UseVisualStyleBackColor = true;
             this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
-            // btnStopPreview
-            // 
-            this.btnStopPreview.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnStopPreview.FlatAppearance.BorderColor = System.Drawing.Color.MidnightBlue;
-            this.btnStopPreview.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnStopPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnStopPreview.Location = new System.Drawing.Point(241, 129);
-            this.btnStopPreview.Name = "btnStopPreview";
-            this.btnStopPreview.Size = new System.Drawing.Size(276, 115);
-            this.btnStopPreview.TabIndex = 17;
-            this.btnStopPreview.Text = "Stop Preview";
-            this.btnStopPreview.UseVisualStyleBackColor = false;
-            this.btnStopPreview.Visible = false;
-            this.btnStopPreview.Click += new System.EventHandler(this.btnStopPreview_Click);
-            // 
             // contextMenuStripArduinoRTB
             // 
             this.contextMenuStripArduinoRTB.Name = "contextMenuStripArduinoRTB";
             this.contextMenuStripArduinoRTB.Size = new System.Drawing.Size(61, 4);
             // 
+            // btnStopPreview
+            // 
+            this.btnStopPreview.Location = new System.Drawing.Point(587, 13);
+            this.btnStopPreview.Name = "btnStopPreview";
+            this.btnStopPreview.Size = new System.Drawing.Size(92, 23);
+            this.btnStopPreview.TabIndex = 18;
+            this.btnStopPreview.Text = "Stop Preview";
+            this.btnStopPreview.UseVisualStyleBackColor = true;
+            this.btnStopPreview.Click += new System.EventHandler(this.btnStopPreview_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(750, 356);
+            this.ClientSize = new System.Drawing.Size(911, 356);
             this.Controls.Add(this.btnStopPreview);
             this.Controls.Add(this.btnReset);
             this.Controls.Add(this.txtMXLFile);
@@ -152,9 +147,10 @@
             this.Controls.Add(this.lstDurations);
             this.Controls.Add(this.lstFreq);
             this.Controls.Add(this.buttonOpenFile);
-            this.MinimumSize = new System.Drawing.Size(758, 221);
+            this.MinimumSize = new System.Drawing.Size(914, 221);
             this.Name = "FormMain";
             this.Text = "Convert MXL to Note List for Arduino";
+            this.Load += new System.EventHandler(this.FormMain_Load);
             this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -171,8 +167,8 @@
         private System.Windows.Forms.TextBox txtMXLFile;
         private System.Windows.Forms.Button btnConvert;
         private System.Windows.Forms.Button btnReset;
-        private System.Windows.Forms.Button btnStopPreview;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripArduinoRTB;
+        private System.Windows.Forms.Button btnStopPreview;
     }
 }
 
