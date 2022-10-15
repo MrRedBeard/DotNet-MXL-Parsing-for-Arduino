@@ -1,18 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using System.IO.Compression;
-using System.Media;
-using System.Runtime.InteropServices;
 using NAudio.Wave.SampleProviders;
 using NAudio.Wave;
 
@@ -25,16 +18,16 @@ namespace MusicXMLParser
     /// C# conversion found here:
     /// https://github.com/MrRedBeard/DotNet-MXL-Parsing-for-Arduino
     /// 
-    /// Refactored and updated here:
-    /// https://github.com/DavidWeed/DotNet-MXL-Parsing-for-Arduino
+    /// Contribution:
+    /// https://github.com/DavidWeed/
+    /// 
+    /// Bounty:
+    /// https://github.com/Tom-Neverwinter
     /// </summary>
-    
+
 
     public partial class FormMain : Form
     {
-        [DllImport("kernel32.dll")]
-        private static extern bool Beep(int frequency, int duration);
-
         private Thread SoundPlayThread;
         private CancellationTokenSource stopSoundPlay;
 

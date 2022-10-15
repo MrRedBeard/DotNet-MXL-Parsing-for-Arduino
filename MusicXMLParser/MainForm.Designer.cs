@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.openFileDialogMXL = new System.Windows.Forms.OpenFileDialog();
             this.buttonOpenFile = new System.Windows.Forms.Button();
             this.lstFreq = new System.Windows.Forms.ListBox();
@@ -147,6 +148,7 @@
             this.Controls.Add(this.lstDurations);
             this.Controls.Add(this.lstFreq);
             this.Controls.Add(this.buttonOpenFile);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(914, 221);
             this.Name = "FormMain";
             this.Text = "Convert MXL to Note List for Arduino";
